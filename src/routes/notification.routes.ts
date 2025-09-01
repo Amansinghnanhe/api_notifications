@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { NotificationModel } from '../models/notification.model'; 
+import NotificationModel from '../models/notification.model';
+
 
 const router = Router();
 
@@ -52,6 +53,33 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to create notification' });
   }
 });
+router.patch('/read/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find notification by primary key (id)
+    const notification = await NotificationModel.findByPk(id);
+
+    if (!notification) {
+      return res.status(404).json({ error: 'Notification not found' });
+    }
+
+    // Mark it as read
+    notification.is_read = true;
+
+    // Save changes
+    await notification.save();
+
+    res.json({
+      message: `Notification with ID ${id} marked as read`,
+      data: notification,
+    });
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    res.status(500).json({ error: 'Failed to mark notification as read' });
+  }
+});
+
 
 
 
@@ -69,6 +97,8 @@ router.delete('/:id', (req, res) => {
     message: `Notification with ID ${id} deleted`,
   });
 });
+
+
 
 // DELETE all notifications (you can add DB delete logic here)
 router.delete('/', (req, res) => {
