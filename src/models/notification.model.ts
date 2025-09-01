@@ -20,6 +20,7 @@ class NotificationModel extends Model<NotificationAttributes, NotificationCreati
   public is_read!: boolean;
   public redirection_number?: number | null;
 
+
   // timestamps will be automatically managed by Sequelize
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
 router.post('/', async (req, res) => {
   try {
     const notificationData = req.body;
@@ -79,9 +78,6 @@ router.patch('/read/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to mark notification as read' });
   }
 });
-
-
-
 
 // PATCH mark all notifications as read (you can add DB update logic here)
 router.patch('/read/all', (req, res) => {

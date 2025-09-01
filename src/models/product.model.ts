@@ -1,39 +1,44 @@
-import { DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/db';
 
+interface ProductAttributes {
+  id: number;
+  name: string;
+  price: number;
+}
 
-export const Product = sequelize.define('Product', {
-  id: {
-    type: DataTypes.BIGINT.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
+interface ProductCreationAttributes extends Optional<ProductAttributes, 'id'> {}
 
-  event_type: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
+class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
+  public id!: number;
+  public name!: string;
+  public price!: number;
 
-  created_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+Product.init(
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
   },
-  updated_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
-  },
-}, {
-  tableName: 'products',
-  timestamps: false,
-});
+  {
+    sequelize,
+    tableName: 'products',
+    timestamps: true,
+  }
+);
+
+export default Product;
