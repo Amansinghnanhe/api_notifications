@@ -12,14 +12,15 @@ const PORT = Number(process.env.PORT) || 3000;
  
 app.use(
   cors({
-    origin: "http://localhost:3000", // your frontend URL
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: ["http://localhost:3000",/\.ngrok-free\.app$/],
+ 
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE","OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization","ngrok-skip-browser-warning",
  ],
     credentials: true,
   })
 );
-
+app.options(/.*/, cors());
 app.use(express.json());
 
 
